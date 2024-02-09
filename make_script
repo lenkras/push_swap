@@ -1,2 +1,2 @@
 #!/bin/bash
-cc main.c manipulate_lists.c push.c push_swap.c reverse.c rotate.c sort.c swap.c prepare_for_big_sort.c free.c -o push_swap
+cc main.c manipulate_lists.c push.c push_swap.c reverse.c rotate.c sort.c swap.c prepare_for_big_sort.c free.c cost.c -o push_swap

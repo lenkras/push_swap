@@ -5,55 +5,41 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: epolkhov <epolkhov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/05 18:52:19 by epolkhov          #+#    #+#             */
-/*   Updated: 2024/02/01 14:11:27 by epolkhov         ###   ########.fr       */
+/*   Created: 2024/01/06 16:45:26 by epolkhov          #+#    #+#             */
+/*   Updated: 2024/02/09 16:39:49 by epolkhov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
-void	print_list(t_list *head)
+int	main(int argc, char **argv)
 {
-	while (head)
-	{
-		printf("%d %d\n", head -> content, head->index);
-		head = head -> next;
-	}
-}
-void	print_node(t_list *head)
-{
-		printf("Target node %d\n", head -> target_node->index);
-		//head = head -> next;
-}
+	t_node	*stack_a;
+	t_node	*stack_b;
 
-int	error_check(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]) || (ft_atol(str) < INT32_MIN || \
-		ft_atol(str) > INT32_MAX))
-		{
-			write (2, "Error\n", 6);
-			exit (1);
-		}
-		i++;
-	}
-	return (ft_atol(str));
-}
-
-int	ft_isdigit(int arg)
-{
-	if (arg >= '0' && arg <= '9')
+	stack_a = NULL;
+	stack_b = NULL;
+	if (argc == 1)
 		return (1);
-	else
-		return (0);
+	if (argc > 1)
+	{
+		put_in_stack(argc, argv, &stack_a);
+		check_duplicate(stack_a);
+		assign_index(stack_a);
+		if (!is_sorted(stack_a))
+		{
+			if (lst_length(stack_a) <= 5)
+				small_sort(&stack_a, &stack_b);
+			else
+				big_sort(&stack_a, &stack_b);
+		}
+		free_stack(&stack_a);
+		free_stack(&stack_b);
+	}
+	return (0);
 }
 
-int	put_in_stack(int argc, char **argv, t_list **a_stack)
+int	put_in_stack(int argc, char **argv, t_node **a_stack)
 {
 	int		i;
 	int		j;
@@ -65,7 +51,7 @@ int	put_in_stack(int argc, char **argv, t_list **a_stack)
 	{
 		array = ft_split(argv[i], ' ');
 		j = 0;
-		if (!array[j])
+		if (!(array[j] || !array))
 		{
 			write (2, "Error\n", 6);
 			exit (1);
@@ -76,103 +62,39 @@ int	put_in_stack(int argc, char **argv, t_list **a_stack)
 			ft_lstadd_back_mod(a_stack, ft_lstnew_mod(input));
 			j++;
 		}
-		free(array);
+		free_array(array);
 		i++;
 	}
-	check_duplicate(*a_stack);
-	assign_index(*a_stack);
-	//print_list(*a_stack);
 	return (0);
 }
 
-// static long	convert_nb(const char *str, long nb, long sign)
-// {
-// 	long	i;
-
-// 	i = 0;
-// 	while (str[i] && (str[i] >= 48 && str[i] <= 57))
-// 	{
-// 		if (nb > LONG_MAX / 10)
-// 		{
-// 			if (sign < 0)
-// 				return (0);
-// 			return (-1);
-// 		}
-// 		nb = nb * 10;
-// 		if (nb > LONG_MAX - (str[i] - 48))
-// 		{
-// 			if (sign < 0)
-// 				return (0);
-// 			return (-1);
-// 		}
-// 		nb = nb + (str[i] - 48);
-// 		i++;
-// 	}
-// 	return (nb);
-// }
-
-// long	ft_atol(const char *str)
-// {
-// 	size_t	i;
-// 	long	nb;
-// 	long	sign;
-
-// 	nb = 0;
-// 	i = 0;
-// 	sign = 1;
-// 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-// 		i++;
-// 	if (str[i] == '-')
-// 		sign = sign * (-1);
-// 	if (str[i] == '-' || str[i] == '+')
-// 		i++;
-// 	nb = convert_nb(str + i, nb, sign);
-// 	return (nb * sign);
-// }
-
-long	ft_atol(const char *str)
+void	big_sort(t_node **stack_a, t_node **stack_b)
 {
-	long	result;
-	int		sign;
-
-	result = 0;
-	sign = 1; 
-	while (*str == ' ' || *str == '\t' || *str == '\n' || \
-			*str == '\r' || *str == '\f' || *str == '\v')
-		str++;
-	if (*str == '-' || *str == '+')
+	push_to_b(stack_a, stack_b);
+	sort_3(stack_a);
+	while (*stack_b)
 	{
-		if (*str == '-')
-			sign = -1;
-		str++;
+		prepare_to_push_b(*stack_a, *stack_b);
+		push_to_a(stack_a, stack_b);
 	}
-	while (ft_isdigit(*str))
-		result = result * 10 + (*str++ - '0');
-	return (result * sign);
+	if (!is_sorted(*stack_a))
+		get_min_on_top(stack_a);
 }
 
-
-int	check_duplicate(t_list *stack)
+void	get_min_on_top(t_node **stack)
 {
-	t_list	*dup;
-	int		temp;
+	int		middle;
+	t_node	*lowest_node;
 
-	if (!stack)
-		exit (1);
-	while (stack && stack->next)
+	middle = lst_length(*stack) / 2;
+	lowest_node = find_min_node(*stack);
+	if (!stack || !*stack)
+		return ;
+	while (*stack != lowest_node)
 	{
-		temp = stack->content;
-		dup = stack;
-		while (dup->next)
-		{
-			dup = dup->next;
-			if (dup->content == temp)
-			{
-				write (2, "Error\n", 6);
-				exit (1);
-			}
-		}
-		stack = stack->next;
+		if (lowest_node->position < middle)
+			ra(stack);
+		else
+			rra(stack);
 	}
-	return (0);
 }

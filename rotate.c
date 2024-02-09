@@ -6,15 +6,15 @@
 /*   By: epolkhov <epolkhov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 13:02:50 by epolkhov          #+#    #+#             */
-/*   Updated: 2024/01/16 16:35:03 by epolkhov         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:42:40 by epolkhov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	rotate(t_list **stack)
+void	rotate(t_node **stack)
 {
-	t_list	*temp;
+	t_node	*temp;
 
 	if (!(*stack) || !(*stack)->next)
 		return ;
@@ -26,19 +26,19 @@ void	rotate(t_list **stack)
 	temp->next->next = NULL;
 }
 
-void	ra(t_list **stack)
+void	ra(t_node **stack)
 {
 	rotate(stack);
 	write(1, "ra\n", 3);
 }
 
-void	rb(t_list **stack)
+void	rb(t_node **stack)
 {
 	rotate(stack);
 	write(1, "rb\n", 3);
 }
 
-void	rr(t_list **a_stack, t_list **b_stack)
+void	rr(t_node **a_stack, t_node **b_stack)
 {
 	rotate(a_stack);
 	rotate(b_stack);

@@ -6,15 +6,15 @@
 /*   By: epolkhov <epolkhov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 13:52:22 by epolkhov          #+#    #+#             */
-/*   Updated: 2024/01/15 17:18:32 by epolkhov         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:42:40 by epolkhov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	reverse(t_list **stack)
+void	reverse(t_node **stack)
 {
-	t_list	*temp;
+	t_node	*temp;
 
 	if (!(*stack) || !(*stack)->next)
 		return ;
@@ -26,19 +26,19 @@ void	reverse(t_list **stack)
 	*stack = (*stack)->prev;
 }
 
-void	rra(t_list **stack)
+void	rra(t_node **stack)
 {
 	reverse(stack);
 	write(1, "rra\n", 4);
 }
 
-void	rrb(t_list **stack)
+void	rrb(t_node **stack)
 {
 	reverse(stack);
 	write(1, "rrb\n", 4);
 }
 
-void	rrr(t_list **a_stack, t_list **b_stack)
+void	rrr(t_node **a_stack, t_node **b_stack)
 {
 	reverse(a_stack);
 	reverse(b_stack);

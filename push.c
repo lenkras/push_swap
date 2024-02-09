@@ -6,15 +6,15 @@
 /*   By: epolkhov <epolkhov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 18:51:58 by epolkhov          #+#    #+#             */
-/*   Updated: 2024/01/15 17:18:40 by epolkhov         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:42:40 by epolkhov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	push(t_list **src, t_list **dest)
+void	push(t_node **src, t_node **dest)
 {
-	t_list	*temp;
+	t_node	*temp;
 
 	if (*src == NULL)
 		return ;
@@ -29,13 +29,13 @@ void	push(t_list **src, t_list **dest)
 	*dest = temp;
 }
 
-void	pa(t_list **a_stack, t_list **b_stack)
+void	pa(t_node **a_stack, t_node **b_stack)
 {
 	push(b_stack, a_stack);
 	write(1, "pa\n", 3);
 }
 
-void	pb(t_list **a_stack, t_list **b_stack)
+void	pb(t_node **a_stack, t_node **b_stack)
 {
 	push(a_stack, b_stack);
 	write(1, "pb\n", 3);

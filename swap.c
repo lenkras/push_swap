@@ -6,13 +6,13 @@
 /*   By: epolkhov <epolkhov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:31:10 by epolkhov          #+#    #+#             */
-/*   Updated: 2024/01/23 14:24:33 by epolkhov         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:42:40 by epolkhov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	swap(t_list **stack)
+void	swap(t_node **stack)
 {
 	int	temp;
 
@@ -26,19 +26,19 @@ void	swap(t_list **stack)
 	(*stack)->next->index = temp;
 }
 
-void	sa(t_list **stack)
+void	sa(t_node **stack)
 {
 	swap(stack);
 	write(1, "sa\n", 3);
 }
 
-void	sb(t_list **stack)
+void	sb(t_node **stack)
 {
 	swap(stack);
 	write(1, "sb\n", 3);
 }
 
-void	ss(t_list **a_stack, t_list **b_stack)
+void	ss(t_node **a_stack, t_node **b_stack)
 {
 	swap(a_stack);
 	swap(b_stack);
