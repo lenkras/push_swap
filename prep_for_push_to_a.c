@@ -6,39 +6,52 @@
 /*   By: epolkhov <epolkhov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:28:26 by epolkhov          #+#    #+#             */
-/*   Updated: 2024/02/09 15:49:05 by epolkhov         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:13:40 by epolkhov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+static int	push_elements(t_node **a, t_node **b, int pushed, int target_index)
+{
+	while (pushed < target_index)
+	{
+		if ((*a)->index < target_index)
+		{
+			pb(a, b);
+			pushed++;
+		}
+		else
+			ra(a);
+	}
+	return (pushed);
+}
+
+static void	push_remaining_elements(t_node **a, t_node **b, int pushed, int len)
+{
+	while (len - pushed > 3)
+	{
+		if ((*a)->index < len - 3)
+		{
+			pb(a, b);
+			pushed++;
+		}
+		else
+			ra(a);
+	}
+}
+
 void	push_to_b(t_node **stack_a, t_node **stack_b)
 {
-	int		stack_size;
-	int		pushed;	
+	int	stack_size;
+	int	pushed;
 
 	stack_size = lst_length(*stack_a);
 	pushed = 0;
-	while (pushed < stack_size / 2)
-	{
-		if ((*stack_a)->index < stack_size / 2)
-		{
-			pb(stack_a, stack_b);
-			pushed++;
-		}
-		else
-			ra(stack_a);
-	}
-	while (stack_size - pushed > 3)
-	{
-		if ((*stack_a)->index < stack_size - 3)
-		{
-			pb(stack_a, stack_b);
-			pushed++;
-		}
-		else
-			ra(stack_a);
-	}
+	pushed = push_elements(stack_a, stack_b, pushed, stack_size / 4);
+	pushed = push_elements(stack_a, stack_b, pushed, stack_size / 2);
+	pushed = push_elements(stack_a, stack_b, pushed, stack_size / 4 * 3);
+	push_remaining_elements(stack_a, stack_b, pushed, stack_size);
 }
 
 void	target_for_b(t_node *stack_a, t_node *stack_b)
@@ -75,5 +88,4 @@ void	prepare_to_push_b(t_node *stack_a, t_node *stack_b)
 	get_position(stack_b);
 	target_for_b(stack_a, stack_b);
 	calculate_cost(stack_a, stack_b);
-	find_cheapest(stack_b);
 }

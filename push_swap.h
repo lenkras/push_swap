@@ -6,7 +6,7 @@
 /*   By: epolkhov <epolkhov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:07:04 by epolkhov          #+#    #+#             */
-/*   Updated: 2024/02/09 16:40:05 by epolkhov         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:17:57 by epolkhov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
-# include <stdbool.h>
 
 typedef struct s_node
 {
@@ -24,7 +23,6 @@ typedef struct s_node
 	int				content;
 	int				position;
 	int				push_cost;
-	bool			cheapest;
 	struct s_node	*target_node;
 	struct s_node	*next;
 	struct s_node	*prev;
@@ -85,8 +83,7 @@ void	do_rrr(t_node **stack_a, t_node **stack_b, t_node *cheapest_node);
 
 /////////////////// cost /////////////////////
 
-t_node	*get_cheapest_node(t_node *stack);
-void	find_cheapest(t_node *stack);
+t_node	*find_cheapest(t_node *stack);
 void	calculate_cost(t_node *stack_a, t_node *stack_b);
 void	initialize_positions(t_node *stack, int *position_a, int *position_b);
 void	calculate_push_cost(t_node *a, t_node *b, int len_a, int len_b);

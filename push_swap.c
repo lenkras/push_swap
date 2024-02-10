@@ -6,7 +6,7 @@
 /*   By: epolkhov <epolkhov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:45:26 by epolkhov          #+#    #+#             */
-/*   Updated: 2024/02/09 16:39:49 by epolkhov         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:27:52 by epolkhov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,13 @@ void	big_sort(t_node **stack_a, t_node **stack_b)
 	sort_3(stack_a);
 	while (*stack_b)
 	{
-		prepare_to_push_b(*stack_a, *stack_b);
 		push_to_a(stack_a, stack_b);
 	}
 	if (!is_sorted(*stack_a))
+	{
+		get_position(*stack_a);
 		get_min_on_top(stack_a);
+	}
 }
 
 void	get_min_on_top(t_node **stack)
